@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pablo Mateos - Tattoo Studio</title>
+    
+    <meta name="description" content="Tattoo Studio de Pablo Mateos. Ve mis últimos trabajos en Instagram y pide tu cita directamente por WhatsApp.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Black+Ops+One&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-background: #fdfdfd;
+            --color-surface: #ffffff;
+            --color-primary: #b9915c;
+            --color-primary-hover: #a17e4f;
+            --color-text: #212121;
+            --color-text-secondary: #666666;
+            --font-headings: 'Cinzel', serif;
+            --font-body: 'Lato', sans-serif;
+            --font-tattoo: 'Black Ops One', cursive;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background-color: var(--color-background); color: var(--color-text); line-height: 1.7; }
+
+        h2, h3 { font-family: var(--font-headings); font-weight: 700; color: var(--color-text); }
+        h2 { font-size: 2.2rem; text-align: center; margin-bottom: 20px; letter-spacing: 1px; }
+        h3 { font-size: 1.5rem; margin-bottom: 15px; color: var(--color-text); }
+        p { color: var(--color-text-secondary); font-weight: 400; }
+        section { padding: 80px 5%; }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999; background-color: var(--color-background);
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.75s ease, visibility 0.75s ease;
+        }
+        #preloader img { width: 220px; }
+        #preloader.preloader-hidden { opacity: 0; visibility: hidden; }
+
+        /* --- SCROLL FADE-IN --- */
+        .fade-in-element {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-element.is-visible { opacity: 1; transform: translateY(0); }
+
+        .btn { text-decoration: none; padding: 12px 28px; font-weight: 700;
+            transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent;
+            text-transform: uppercase; letter-spacing: 1px; display: inline-block; text-align: center;
+        }
+        .btn-secondary { border: 2px solid var(--color-primary); color: var(--color-primary); background: transparent; }
+        .btn-secondary:hover { background-color: var(--color-primary); color: #fff; }
+        .btn-large { font-size: 1.1rem; padding: 15px 35px; }
+        .btn i { margin-right: 10px; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+            50% { transform: scale(1.05); box-shadow: 0 8px 25px rgba(185, 145, 92, 0.4); }
+            100% { transform: scale(1); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        }
+        .btn-instagram-special {
+            background: linear-gradient(45deg, #a17e4f, #d1a56a); color: #fff; border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); animation: pulse 2.5s infinite;
+            transition: transform 0.3s ease;
+        }
+        .btn-instagram-special:hover { transform: translateY(-3px); }
+
+        .intro-text { text-align: center; max-width: 700px; margin: 0 auto 50px; }
+        .portfolio-showcase-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 40px; }
+        .gallery-item { overflow: hidden; border: 4px solid var(--color-surface); box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            aspect-ratio: 1 / 1; transition: transform 0.35s ease, box-shadow 0.35s ease; cursor: pointer; }
+        .gallery-item img { width: 100%; height: 100%; display: block; object-fit: cover; }
+        .gallery-item:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .instagram-cta { text-align: center; margin-bottom: 60px; }
+        .contact-grid { display: flex; flex-direction: column; gap: 30px; }
+        .contact-card { background-color: var(--color-surface); padding: 30px; border: 1px solid #eee; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .contact-card ul { list-style-position: inside; padding-left: 5px; margin-top: 15px; margin-bottom: 25px; }
+        .contact-card li { margin-bottom: 5px; color: var(--color-text-secondary); }
+        .google-stars { color: var(--color-primary); font-size: 1.2rem; margin-bottom: 15px; letter-spacing: 3px; }
+        .contact-card .btn-instagram-special { margin-top: auto; }
+        .main-footer { background-color: #f4f4f4; padding: 60px 5%; text-align: center; }
+        .footer-social { margin-bottom: 20px; }
+        .footer-social a { color: var(--color-text-secondary); font-size: 1.5rem; margin: 0 10px; transition: color 0.3s ease; }
+        .footer-social a:hover { color: var(--color-primary); }
+
+        @media (min-width: 768px) {
+            .portfolio-showcase-grid { grid-template-columns: repeat(4, 1fr); }
+            .contact-grid { flex-direction: row; align-items: stretch; }
+            .contact-card { flex: 1; display: flex; flex-direction: column; }
+        }
+
+        /* ========================================
+           NAVBAR
+        ======================================== */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(12px);
+            z-index: 1000; padding: 0.8rem 0;
+        }
+        .nav-container {
+            max-width: 1400px; margin: 0 auto; display: flex;
+            align-items: center; justify-content: space-between; padding: 0 30px;
+            position: relative;
+        }
+        .nav-logo-left {
+            flex: 0 0 auto;
+        }
+        .logo-img {
+            height: 110px;
+            width: auto; transition: transform 0.3s ease;
+        }
+        .logo-img:hover { transform: scale(1.05); }
+
+        .nav-title {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            text-align: center; z-index: 1;
+        }
+        .nav-title h1 {
+            font-family: var(--font-tattoo);
+            font-size: 2.6rem;
+            color: #ffffff !important;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin: 0;
+            text-shadow: 
+                3px 3px 0 #000,
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                2px 2px 0 #000;
+            white-space: nowrap;
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
+        }
+
+        .hamburger { display: none; flex-direction: column; background: none; border: none; cursor: pointer; z-index: 2; }
+        .hamburger span { width: 28px; height: 3px; background: white; margin: 4px 0; border-radius: 3px; transition: 0.3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(-45deg) translate(-6px, 6px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(45deg) translate(-6px, -6px); }
+
+        .nav-menu { flex: 0 0 auto; }
+        .nav-menu ul { display: flex; list-style: none; gap: 2.5rem; }
+        .nav-menu a { color: white; text-decoration: none; font-size: 1.1rem; font-weight: 500; transition: color 0.3s ease; position: relative; }
+        .nav-menu a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background: #ff6b6b; transition: width 0.3s ease; }
+        .nav-menu a:hover::after { width: 100%; }
+        .nav-menu a:hover { color: #ff6b6b; }
+
+        @media (max-width: 900px) {
+            .logo-img { height: 80px; }
+            .nav-title h1 { font-size: 2.1rem; }
+            .nav-container { padding: 0 20px; }
+        }
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-menu {
+                position: fixed; top: 80px; left: -100%; width: 100%; height: calc(100vh - 80px);
+                background: rgba(0, 0, 0, 0.98); display: flex; align-items: flex-start; justify-content: center;
+                padding-top: 3rem; transition: left 0.3s ease;
+            }
+            .nav-menu.active { left: 0; }
+            .nav-menu ul { flex-direction: column; gap: 2rem; text-align: center; }
+            .nav-menu a { font-size: 1.6rem; display: block; padding: 1rem; }
+            .nav-menu a::after { display: none; }
+        }
+
+        /* ========================================
+           HERO: LOGO + PARALLAX + EFECTOS
+        ======================================== */
+        .hero-section {
+            position: relative; height: 100vh; display: flex; align-items: center;
+            justify-content: center; overflow: hidden; margin-top: 80px;
+        }
+
+        .hero-bg {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url('images/local.jpg') center/cover no-repeat fixed;
+            z-index: -2; transform: scale(1.15);
+            transition: transform 0.1s ease-out;
+        }
+
+        .hero-logo-center {
+            position: relative; z-index: 10;
+            text-align: center;
+            animation: fadeInLogo 1.5s ease-out forwards;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .hero-logo-center img {
+            width: 65vw;
+            max-width: 600px;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+            transition: all 0.4s ease;
+        }
+
+        /* EFECTO HOVER: BRILLA */
+        .hero-logo-center img:hover {
+            filter: drop-shadow(0 0 30px rgba(255,255,255,0.9)) !important;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeInLogo {
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section { height: 80vh; margin-top: 70px; }
+            .hero-logo-center img {
+                width: 80vw;
+                max-width: 400px;
+            }
+        }
+
+        /* ========================================
+           BOTÓN FLOTANTE WHATSAPP
+        ======================================== */
+        .whatsapp-float {
+            position: fixed; bottom: 20px; right: 20px; z-index: 999;
+            background: #25d366; color: white; width: 60px; height: 60px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite; transition: transform 0.3s;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        .whatsapp-float i { margin: 0; }
+
+        /* ========================================
+           FOOTER: GOOGLE MAPS
+        ======================================== */
+        .footer-address a {
+            color: var(--color-primary); text-decoration: none; font-weight: 600;
+        }
+        .footer-address a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <img src="images/logo.jpg" alt="Cargando...">
+    </div>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo-left">
+                <a href="#inicio">
+                    <img src="images/logo3-removebg-preview.png" alt="Pablo Mateos Tattoo" class="logo-img">
+                </a>
+            </div>
+            <div class="nav-title">
+                <h1>PABLO MATEOS TATTOO</h1>
+            </div>
+            <button class="hamburger" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#portfolio-contacto">Portfolio</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO: LOGO + EFECTOS -->
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-logo-center">
+            <img src="images/logo3-removebg-preview.png" alt="Pablo Mateos Tattoo">
+        </div>
+    </section>
+
+    <!-- BOTÓN FLOTANTE WHATSAPP -->
+    <div class="whatsapp-float">
+        <a href="https://wa.me/625940964?text=Hola,%20quiero%20una%20cita%20para%20tatuaje" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <main>
+        <section id="portfolio-contacto">
+            <h2 class="fade-in-element">Instagram y Contacto</h2>
+            <p class="intro-text fade-in-element">Aquí puedes ver una selección de mis trabajos y los siguientes pasos para dar vida a tu idea. Mi portfolio más completo y actualizado está siempre en Instagram.</p>
+
+            <div class="portfolio-showcase-grid">
+                <div class="gallery-item fade-in-element"><img src="images/tatuaje1.JPG" alt="Tatuaje 1"></div>
+                <div class="gallery-item fade-in-element"><img src="images/tatuaje2.JPG" alt="Tatuaje 2"></div>
+                <div class="gallery-item fade-in-element"><img src="images/tatuaje3.JPG" alt="Tatuaje 3"></div>
+                <div class="gallery-item fade-in-element"><img src="images/tatuaje4.JPG" alt="Tatuaje 4"></div>
+            </div>
+            
+            <div class="instagram-cta fade-in-element">
+                 <a href="https://www.instagram.com/pablomateostattoo" target="_blank" class="btn btn-instagram-special btn-large">
+                    <i class="fab fa-instagram"></i> Ver Portfolio Completo
+                </a>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-card fade-in-element">
+                    <h3>¿Listo para Crear?</h3>
+                    <p>Para agilizar el proceso de reserva, envíame un mensaje por WhatsApp con:</p>
+                    <ul>
+                        <li>Tu idea y referencias.</li>
+                        <li>Zona del cuerpo y tamaño.</li>
+                    </ul>
+                    <a href="https://wa.me/625940964?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20tatuaje." target="_blank" class="btn btn-instagram-special btn-large" style="width:100%;">
+                        <i class="fab fa-whatsapp"></i> Reservar por WhatsApp
+                    </a>
+                </div>
+                <div class="contact-card fade-in-element">
+                    <h3>Opiniones de Clientes</h3>
+                     <div class="google-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>La confianza es clave. Lee las experiencias de clientes reales en mi perfil de Google.</p>
+                    <br>
+                    <a href="https://www.google.com/search?uds=AOm0WdE2fekQnsyfYEw8JPYozOKz3iSssUVrgaFUncHr8D8mnii-YVKmbqUB2DSJapCHf3mz1EyMGegIoCYlng7cdd-dW3IN7dsUFo_BqQR-juIJacVYXSC_-e-qKavskeNGhdiZuBe16gDoa_t1CiUcpJmbtfRhAyXV9fuVuIXma77KW9NnWXo&q=tattoostudiopablomateos+Rese%C3%A1sas&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E_hSSmw6JNBcNEQ8kmu0Dhmq1AX0Km2gzGMoM6NefP3S4m7aw6NFLhUQvdeJqiWiM1u5TvEu1RAD-k4q5YNEZxwrtulGx0mybHTS3mdtt-ctuXCmmw%3D%3D&cs=1&hl=es" target="_blank" class="btn btn-instagram-special btn-large" style="width:100%;">
+                        Ver Reseñas en Google
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER CON GOOGLE MAPS -->
+    <footer id="contacto" class="main-footer">
+        <h3>Pablo Mateos Tattoo Studio</h3>
+        <p class="footer-address" style="margin-bottom:20px;">
+            <a href="https://maps.app.goo.gl/4xfk6CgS9Njvat1o7" target="_blank">
+                <i class="fas fa-map-marker-alt"></i> C. Rodrigo de Xerez, 5, 21400 Ayamonte, Huelva
+            </a>
+        </p>
+        <div class="footer-social">
+            <a href="https://www.instagram.com/pablomateostattoo" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/625940964?text=Hola!" aria-label="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <p style="font-size: 0.9rem; color: #999;">&copy; 2025 Pablo Mateos. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // PRELOADER
+        const preloader = document.getElementById('preloader');
+        window.addEventListener('load', () => {
+            setTimeout(() => preloader.classList.add('preloader-hidden'), 1500);
+        });
+
+        // SCROLL FADE-IN
+        const fadeInElements = document.querySelectorAll('.fade-in-element');
+        const revealElements = () => {
+            const windowHeight = window.innerHeight;
+            fadeInElements.forEach(el => {
+                if (el.getBoundingClientRect().top < windowHeight - 100) {
+                    el.classList.add('is-visible');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealElements);
+        document.addEventListener('DOMContentLoaded', revealElements);
+
+        // NAVBAR HAMBURGUESA
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // PARALLAX + DESVANECIMIENTO DEL LOGO
+        const heroBg = document.querySelector('.hero-bg');
+        const heroLogo = document.querySelector('.hero-logo-center');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            // Parallax suave
+            heroBg.style.transform = `translateY(${scrolled * 0.5}px) scale(1.15)`;
+            // Logo se desvanece
+            const opacity = Math.max(1 - scrolled / 600, 0);
+            heroLogo.style.opacity = opacity;
+        });
+    </script>
+</body>
+</html>
