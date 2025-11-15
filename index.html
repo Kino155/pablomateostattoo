@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pablo Mateos - Tattoo Studio</title>
+    
+    <meta name="description" content="Tattoo Studio de Pablo Mateos. Ve mis últimos trabajos en Instagram y pide tu cita directamente por WhatsApp.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Black+Ops+One&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-background: #fdfdfd;
+            --color-surface: #ffffff;
+            --color-primary: #b9915c;
+            --color-primary-hover: #a17e4f;
+            --color-text: #212121;
+            --color-text-secondary: #666666;
+            --font-headings: 'Cinzel', serif;
+            --font-body: 'Lato', sans-serif;
+            --font-tattoo: 'Black Ops One', cursive;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background-color: var(--color-background); color: var(--color-text); line-height: 1.7; }
+
+        h2, h3 { font-family: var(--font-headings); font-weight: 700; color: var(--color-text); }
+        h2 { font-size: clamp(1.8rem, 5vw, 2.4rem); text-align: center; margin-bottom: 20px; letter-spacing: 1px; }
+        h3 { font-size: clamp(1.3rem, 4vw, 1.6rem); margin-bottom: 12px; }
+        p { color: var(--color-text-secondary); font-weight: 400; font-size: clamp(0.95rem, 3vw, 1rem); }
+        section { padding: clamp(50px, 8vw, 80px) 5%; }
+
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999; background-color: var(--color-background);
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.75s ease, visibility 0.75s ease;
+        }
+        #preloader img { width: clamp(160px, 40vw, 220px); }
+        #preloader.preloader-hidden { opacity: 0; visibility: hidden; }
+
+        .fade-in-element {
+            opacity: 0; transform: translateY(15px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-element.is-visible { opacity: 1; transform: translateY(0); }
+
+        .btn {
+            text-decoration: none; padding: clamp(12px, 3vw, 16px) clamp(20px, 5vw, 32px);
+            font-weight: 700; transition: all 0.3s ease; cursor: pointer;
+            border: 2px solid transparent; text-transform: uppercase;
+            letter-spacing: 1px; display: inline-block; text-align: center;
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem); border-radius: 8px;
+        }
+        .btn-large { font-size: clamp(1rem, 2.8vw, 1.2rem); padding: clamp(14px, 3.5vw, 18px) clamp(28px, 6vw, 40px); }
+        .btn i { margin-right: 8px; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); }
+        }
+        .btn-cta {
+            background: linear-gradient(45deg, #a17e4f, #d1a56a); color: #fff; border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        .btn-cta.pulse { animation: pulse 2.5s infinite; }
+
+        .intro-text { text-align: center; max-width: 700px; margin: 0 auto 40px; font-size: clamp(0.95rem, 2.8vw, 1.1rem); }
+        .portfolio-showcase-grid { display: grid; grid-template-columns: 1fr; gap: clamp(10px, 2vw, 15px); margin-bottom: 40px; }
+        .gallery-item { overflow: hidden; border: 3px solid var(--color-surface); box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            aspect-ratio: 1 / 1; transition: transform 0.3s ease; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-item:hover { transform: scale(1.04); }
+        .instagram-cta { text-align: center; margin-bottom: 50px; }
+        
+        .contact-grid { 
+            display: flex; flex-direction: column; 
+            gap: clamp(20px, 4vw, 30px);
+            max-width: 800px; margin: 0 auto;
+        }
+        .contact-card { 
+            background-color: var(--color-surface); padding: clamp(25px, 5vw, 40px);
+            border: 1px solid #eee; box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+            text-align: center; width: 100%;
+        }
+        .contact-card ul { list-style-position: inside; padding-left: 0; margin: 12px 0 24px 0; text-align: center; display: inline-block; }
+        .contact-card li { margin-bottom: 8px; font-size: clamp(0.9rem, 2.5vw, 1rem); }
+        .contact-card .btn-cta { width: 100%; }
+        .google-stars { color: var(--color-primary); font-size: clamp(1rem, 2.5vw, 1.2rem); margin-bottom: 12px; letter-spacing: 2px; }
+
+        .main-footer { background-color: #f4f4f4; padding: clamp(40px, 8vw, 60px) 5%; text-align: center; font-size: clamp(0.85rem, 2.2vw, 0.95rem); }
+        .footer-social { margin-bottom: 16px; }
+        .footer-social a { color: var(--color-text-secondary); font-size: clamp(1.4rem, 4vw, 1.6rem); margin: 0 clamp(8px, 2vw, 12px); }
+        .footer-social a:hover { color: var(--color-primary); }
+
+        @media (min-width: 768px) {
+            .portfolio-showcase-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* ========================================
+           NAVBAR
+        ======================================== */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(12px);
+            z-index: 1000; padding: clamp(0.5rem, 1.5vw, 0.8rem) 0;
+        }
+        .nav-container {
+            max-width: 1400px; margin: 0 auto; display: flex;
+            align-items: center; justify-content: space-between; padding: 0 clamp(12px, 3vw, 30px);
+        }
+        .logo-img {
+            height: clamp(55px, 12vw, 70px); width: auto; transition: transform 0.3s ease;
+        }
+        .logo-img:hover { transform: scale(1.05); }
+
+        .nav-title {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            pointer-events: none;
+        }
+        .nav-title h1 {
+            font-family: var(--font-tattoo); font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+            color: #ffffff !important; letter-spacing: clamp(1px, 0.5vw, 3px);
+            text-transform: uppercase; margin: 0;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.8); white-space: nowrap;
+        }
+        
+        .nav-right { margin-left: auto; }
+
+        .hamburger { 
+            display: flex; flex-direction: column; background: none; border: none; 
+            cursor: pointer; z-index: 1001; padding: 5px;
+        }
+        .hamburger span { width: 28px; height: 3px; background: white; margin: 4px 0; border-radius: 3px; transition: 0.3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(-45deg) translate(-7px, 7px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(45deg) translate(-7px, -7px); }
+
+        .nav-menu {
+            position: fixed; top: 0; right: -100%;
+            width: clamp(280px, 70vw, 350px); height: 100vh;
+            background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(15px);
+            display: flex; align-items: center; justify-content: center;
+            transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1); z-index: 1000;
+        }
+        .nav-menu.active { right: 0; }
+        
+        /* --- BOTÓN 'X' AÑADIDO --- */
+        .close-menu-btn {
+            position: absolute; top: 15px; right: 20px;
+            background: none; border: none; color: white;
+            font-size: 2.8rem; line-height: 1;
+            cursor: pointer; padding: 10px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .close-menu-btn:hover {
+            color: var(--color-primary); transform: rotate(90deg);
+        }
+        
+        .nav-menu ul { list-style: none; padding: 0; flex-direction: column; gap: clamp(1.8rem, 4vw, 2.2rem); text-align: center; }
+        .nav-menu a { color: white; text-decoration: none; font-size: clamp(1.5rem, 4vw, 1.8rem); font-weight: 700; display: block; padding: 15px; transition: color 0.3s ease, transform 0.3s ease; }
+        .nav-menu a:hover { color: var(--color-primary); transform: scale(1.1); }
+
+        /* ========================================
+           HERO
+        ======================================== */
+        .hero-section {
+            position: relative; height: clamp(70vh, 85vw, 100vh); display: flex; align-items: center;
+            justify-content: center; overflow: hidden; margin-top: clamp(60px, 15vw, 86px);
+        }
+        .hero-bg {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url('images/local.jpg') center/cover no-repeat;
+            z-index: -2; transform: scale(1.15);
+        }
+        .hero-logo-center {
+            position: relative; z-index: 10; text-align: center;
+            animation: fadeInLogo 1.5s ease-out forwards; opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .hero-logo-center img {
+            width: clamp(75vw, 85vw, 65vw); max-width: 600px;
+            height: auto; filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.7));
+            transition: all 0.3s ease;
+        }
+        @media (min-width: 992px) {
+            .hero-logo-center img:hover {
+                filter: drop-shadow(0 0 30px rgba(255,255,255,0.9)) !important;
+                transform: scale(1.05);
+            }
+            .hero-bg { background-attachment: fixed; }
+        }
+        @keyframes fadeInLogo { to { opacity: 1; } }
+
+        .whatsapp-float {
+            position: fixed; bottom: clamp(12px, 3vw, 16px); right: clamp(12px, 3vw, 16px); z-index: 998;
+            background: #25d366; color: white; width: clamp(56px, 12vw, 64px); height: clamp(56px, 12vw, 64px);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: clamp(1.8rem, 4vw, 2.2rem); box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite; text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); color: white; }
+
+        .footer-address a {
+            color: var(--color-primary); text-decoration: none; font-weight: 600;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+        .footer-address a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="images/logo.jpg" alt="Cargando...">
+    </div>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo-left">
+                <a href="#">
+                    <img src="images/logo3-removebg-preview.png" alt="Pablo Mateos Tattoo" class="logo-img">
+                </a>
+            </div>
+            <div class="nav-title">
+                <h1>PABLO MATEOS</h1>
+            </div>
+            <div class="nav-right">
+                <button class="hamburger" aria-label="Abrir menú">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="nav-menu">
+        <!-- 'X' AÑADIDA AQUÍ -->
+        <button class="close-menu-btn" aria-label="Cerrar menú">&times;</button>
+        <ul>
+            <li><a href="#portfolio-contacto">Portfolio</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero-section" id="inicio">
+        <div class="hero-bg"></div>
+        <div class="hero-logo-center">
+            <img src="images/logo3-removebg-preview.png" alt="Pablo Mateos Tattoo">
+        </div>
+    </section>
+
+    <a href="https://wa.me/62594094" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <main>
+        <section id="portfolio-contacto">
+            <h2 class="fade-in-element">Portfolio y Contacto</h2>
+            <p class="intro-text fade-in-element">Aquí puedes ver una selección de mis trabajos y los siguientes pasos para dar vida a tu idea. Mi portfolio más completo y actualizado está siempre en Instagram.</p>
+
+            <div class="portfolio-showcase-grid">
+                <div class="gallery-item fade-in-element"><img src="images/tatuaje1.JPG" alt="Tatuaje 1"></div>
+                <div class="gallery-item fade-in-element"><img src="images/tatuaje2.JPG" alt="Tatuaje 2"></div>
+                <div class="gallery-item fade-in-element"><img src="images/tatuaje3.JPG" alt="Tatuaje 3"></div>
+                <div class="gallery-item fade-in-element"><img src="images/tatuaje4.JPG" alt="Tatuaje 4"></div>
+            </div>
+            
+            <div class="instagram-cta fade-in-element">
+                 <a href="https://www.instagram.com/pablomateostattoo" target="_blank" rel="noopener noreferrer" class="btn btn-cta pulse btn-large">
+                    <i class="fab fa-instagram"></i> Ver Portfolio Completo
+                </a>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-card fade-in-element">
+                    <h3>¿Listo para Crear?</h3>
+                    <p>Para agilizar el proceso, envíame un WhatsApp con:</p>
+                    <ul>
+                        <li>Tu idea y referencias.</li>
+                        <li>Zona del cuerpo y tamaño.</li>
+                    </ul>
+                    <a href="https://wa.me/625940964?text=Hola,%20quisiera%20pedir%20una%20cita%20para%20un%20tatuaje." target="_blank" rel="noopener noreferrer" class="btn btn-cta btn-large">
+                        <i class="fab fa-whatsapp"></i> Reservar Cita
+                    </a>
+                </div>
+                <div class="contact-card fade-in-element">
+                    <h3>Opiniones de Clientes</h3>
+                     <div class="google-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>La confianza es clave. Lee las experiencias de otros clientes en mi perfil de Google.</p>
+                    <a href="https://www.google.com/search?q=tattoostudiopablomateos" target="_blank" rel="noopener noreferrer" class="btn btn-cta btn-large">
+                        Ver Reseñas en Google
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contacto" class="main-footer">
+        <h3>Pablo Mateos Tattoo Studio</h3>
+        <p class="footer-address" style="margin-bottom:16px;">
+            <a href="https://maps.app.goo.gl/3tV9Y7k9mK9zL9zA7" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-map-marker-alt"></i> C. Rodrigo de Xerez, 5, 21400 Ayamonte
+            </a>
+        </p>
+        <div class="footer-social">
+            <a href="https://www.instagram.com/pablomateostattoo" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/625940964?text=Hola!" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <p style="margin-top: 16px;">&copy; 2025 Pablo Mateos. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // PRELOADER
+        const preloader = document.getElementById('preloader');
+        window.addEventListener('load', () => {
+            setTimeout(() => preloader.classList.add('preloader-hidden'), 1200);
+        });
+
+        // SCROLL FADE-IN
+        const fadeInElements = document.querySelectorAll('.fade-in-element');
+        const revealElements = () => {
+            const windowHeight = window.innerHeight;
+            fadeInElements.forEach(el => {
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 80) {
+                    el.classList.add('is-visible');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealElements, { passive: true });
+        document.addEventListener('DOMContentLoaded', revealElements);
+
+        // --- HAMBURGER & SIDEBAR SCRIPT ---
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const closeMenuBtn = document.querySelector('.close-menu-btn'); // 'X' button
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        const body = document.body;
+
+        const toggleMenu = () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+        };
+
+        hamburger.addEventListener('click', toggleMenu);
+        closeMenuBtn.addEventListener('click', toggleMenu); // Event listener for 'X' button
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        });
+
+        // PARALLAX + LOGO FADE
+        const heroBg = document.querySelector('.hero-bg');
+        const heroLogo = document.querySelector('.hero-logo-center');
+        let isDesktop = window.innerWidth >= 992;
+
+        const handleScrollEffects = () => {
+            const scrolled = window.pageYOffset;
+            if (isDesktop) {
+                 heroBg.style.transform = `translateY(${scrolled * 0.4}px) scale(1.15)`;
+            }
+            const opacity = Math.max(1 - scrolled / (isDesktop ? 500 : 300), 0);
+            heroLogo.style.opacity = opacity;
+        };
+
+        window.addEventListener('scroll', handleScrollEffects, { passive: true });
+        window.addEventListener('resize', () => {
+            isDesktop = window.innerWidth >= 992;
+        });
+    </script>
+</body>
+</html>
