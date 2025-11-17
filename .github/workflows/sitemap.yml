@@ -3,7 +3,7 @@ name: Generate Sitemap
 on:
   push:
     branches:
-      - main  # Cambia 'main' si tu rama principal es otra (ej: 'master')
+      - main  # Asegúrate de que esta es tu rama principal
 
 jobs:
   build:
@@ -18,8 +18,6 @@ jobs:
         with:
           # Usa la URL completa de tu sitio de Cloudflare
           base-url-path: https://pablomateostattoo.pages.dev
-          # Deja esto como está para que el archivo se guarde en la raíz
-          sitemap-path: sitemap.xml
 
       - name: Commit and push sitemap
         run: |
