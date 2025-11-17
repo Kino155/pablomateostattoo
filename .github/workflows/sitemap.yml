@@ -7,6 +7,11 @@ on:
 
 jobs:
   build:
+    # --- ESTA ES LA SECCIÓN NUEVA QUE SOLUCIONA EL ERROR ---
+    permissions:
+      contents: write
+    # ---------------------------------------------------------
+    
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +21,6 @@ jobs:
       - name: Generate sitemap
         uses: cicirello/generate-sitemap@v1
         with:
-          # Usa la URL completa de tu sitio de Cloudflare
           base-url-path: https://pablomateostattoo.pages.dev
 
       - name: Commit and push sitemap
@@ -24,6 +28,5 @@ jobs:
           git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'actions-bot@github.com'
           git add sitemap.xml
-          # Solo hace commit y push si hay cambios en el sitemap
           git diff --staged --quiet || git commit -m "chore: auto-generate sitemap"
           git push
