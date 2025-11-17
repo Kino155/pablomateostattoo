@@ -1,0 +1,16 @@
+# Título y descripción del sitio
+title: Pablo Mateos Tattoo
+description: Sitio web oficial de Pablo Mateos Tattoo.
+
+# URL base de tu sitio. Es FUNDAMENTAL para que el sitemap se genere correctamente.
+# ¡Asegúrate de que la URL es la correcta y no tiene una barra al final!
+url: "https://pablomateostattoo.pages.dev"
+
+# Plugins de Jekyll a utilizar
+plugins:
+  - jekyll-sitemap
+
+# Opcional: Excluir archivos o carpetas de la construcción del sitio
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
