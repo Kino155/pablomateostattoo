@@ -1,0 +1,31 @@
+name: Generate Sitemap
+
+on:
+  push:
+    branches:
+      - main  # Cambia 'main' si tu rama principal es otra (ej: 'master')
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Generate sitemap
+        uses: cicirello/generate-sitemap@v1
+        with:
+          # Usa la URL completa de tu sitio de Cloudflare
+          base-url-path: https://pablomateostattoo.pages.dev
+          # Deja esto como está para que el archivo se guarde en la raíz
+          sitemap-path: sitemap.xml
+
+      - name: Commit and push sitemap
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions-bot@github.com'
+          git add sitemap.xml
+          # Solo hace commit y push si hay cambios en el sitemap
+          git diff --staged --quiet || git commit -m "chore: auto-generate sitemap"
+          git push
